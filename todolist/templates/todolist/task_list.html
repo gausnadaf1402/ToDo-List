@@ -1,0 +1,44 @@
+{% extends 'todolist/main.html' %}
+{% block title %}List{% endblock title %}
+  {% block body %}
+  <div class="header-bar">
+    <div>
+      <h1>Hello {{request.user|title}}</h1>
+      <h3 style="margin:0">You Have<i> {{count}} </i>incomplete tasks</h3>
+    </div>
+    {% if request.user.is_authenticated %}
+      <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+  </div>
+   
+    <hr>
+    <h1>My todo List</h1>
+    <a href="{%url 'task-create'%}">Add Task<i class="fa fa-plus" aria-hidden="true"></i></a>
+    <table class="table">
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Title</th>
+            <th>description</th>
+            <th>complete</th>
+            <th>View</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        {% for task in tasks %}
+          <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{task.user}}</td>
+            <td>{{task.title}}</td>
+            <td>{{task.description}}</td>
+            <td>{{task.complete}}</td>
+            <td><a href="{% url 'task'  task.id %}"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+            <td><a href="{% url 'task-update'  task.id %}"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+            <td><a href="{% url 'task-delete'  task.id %}"><i class="fa fa-trash"></i></a></td>
+          </tr>
+        {% endfor %}
+    </table>
+
+    {% endblock body %}
